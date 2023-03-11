@@ -17,7 +17,7 @@ export default renderer;
 
 // ANIMATION 
 const clock = new Clock(controls, renderer)
-export const tick = () => {
+export const renderTick = () => {
     const elapsedTime = clock.getElapsedTime()
 
     // Update controls
@@ -27,6 +27,6 @@ export const tick = () => {
     renderer.render(scene, camera)
 
     // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+    window.requestAnimationFrame(renderTick)
 }
 

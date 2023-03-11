@@ -7,7 +7,6 @@ const resizeScreen = () => {
         // Update sizes
         sizes.width = window.innerWidth
         sizes.height = window.innerHeight
-        console.log(sizes)
         // Update camera
         camera.aspect = sizes.width / sizes.height
         camera.updateProjectionMatrix()
