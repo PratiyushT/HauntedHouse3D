@@ -20,4 +20,11 @@ doorLight.position.set(0.2, 2.2, 2.7)
 house.add(doorLight)
 
 
+//GhostLight
+export const ghostLight1 = new PointLight("#ff00ff", 2, 3)
+export const ghostLight2 = new PointLight("#00ffff", 2, 3)
+export const ghostLight3 = new PointLight("#ffff00", 2, 3)
+
+
 scene.add(ambientLight, moonLight)
+scene.add(ghostLight1, ghostLight2, ghostLight3)
