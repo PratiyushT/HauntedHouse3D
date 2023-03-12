@@ -2,13 +2,21 @@ import * as THREE from 'three'
 import { BoxGeometry, ConeGeometry, DoubleSide, Float32BufferAttribute, Group, Mesh, MeshStandardMaterial, PlaneGeometry, SphereGeometry } from 'three'
 import { scene } from './base'
 import { graves, house } from './groups'
-import { doorAlphaTexture, doorAmbientOcclusionTexture, doorColorTexture, doorHeightTexture, doorMetalnessTexture, doorNormalTexture, doorRoughnessTexture } from './textures'
+import { brickAmbientOcclusionTexture, brickColorTexture, brickNormalTexture, brickRoughnessTexture, doorAlphaTexture, doorAmbientOcclusionTexture, doorColorTexture, doorHeightTexture, doorMetalnessTexture, doorNormalTexture, doorRoughnessTexture, grassAmbientOcclusionTexture, grassColorTexture, grassNormalTexture, grassRoughnessTexture } from './textures'
 
 
 //FLOOR
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(20, 20),
-    new THREE.MeshStandardMaterial({ color: '#a9c388' })
+    new THREE.MeshStandardMaterial({
+        map: grassColorTexture,
+        normalMap: grassNormalTexture,
+        // roughness: grassRoughnessTexture,
+        aoMap: grassAmbientOcclusionTexture,
+    })
+)
+floor.geometry.setAttribute('uv2',
+    new Float32BufferAttribute(floor.geometry.attributes.uv.array, 2)
 )
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
@@ -18,11 +26,16 @@ floor.material.side = DoubleSide
 const walls = new Mesh(
     new BoxGeometry(4, 2.5, 4),
     new MeshStandardMaterial({
-        color: "#ac8e82"
+        map: brickColorTexture,
+        normalMap: brickNormalTexture,
+        // roughness: brickRoughnessTexture,
+        aoMap: brickAmbientOcclusionTexture,
     }),
 );
-//Because the house is at the middle of the floor.
-//So we will divide by 2 to get the position and move its half parts upwards
+
+walls.geometry.setAttribute('uv2',
+    new Float32BufferAttribute(walls.geometry.attributes.uv.array, 2)
+)
 walls.position.y = 2.5 / 2
 
 //ROOFS
@@ -49,9 +62,9 @@ const door = new Mesh(
         roughnessMap: doorRoughnessTexture,
     })
 );
-//For ambient occlusion
+
 door.geometry.setAttribute('uv2',
-    new Float32BufferAttribute(door.geometry.attributes.uv.array, 2)//UV values are 2D hence 2.
+    new Float32BufferAttribute(door.geometry.attributes.uv.array, 2)
 )
 door.position.y = 1
 door.position.z = 4 / 2 + 0.01
