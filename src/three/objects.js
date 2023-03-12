@@ -1,7 +1,8 @@
 import * as THREE from 'three'
-import { BoxGeometry, ConeGeometry, DoubleSide, Group, Mesh, MeshStandardMaterial, PlaneGeometry, SphereGeometry } from 'three'
+import { BoxGeometry, ConeGeometry, DoubleSide, Float32BufferAttribute, Group, Mesh, MeshStandardMaterial, PlaneGeometry, SphereGeometry } from 'three'
 import { scene } from './base'
 import { graves, house } from './groups'
+import { doorAlphaTexture, doorAmbientOcclusionTexture, doorColorTexture, doorHeightTexture, doorMetalnessTexture, doorNormalTexture, doorRoughnessTexture } from './textures'
 
 
 //FLOOR
@@ -35,9 +36,23 @@ roof.rotation.y = Math.PI / 4
 
 //DOOR
 const door = new Mesh(
-    new PlaneGeometry(2, 2),
-    new MeshStandardMaterial({ color: "#aa7b7b" })
+    new PlaneGeometry(2.2, 2.2, 100, 100),
+    new MeshStandardMaterial({
+        map: doorColorTexture,
+        transparent: true,
+        alphaMap: doorAlphaTexture,
+        aoMap: doorAmbientOcclusionTexture,
+        displacementMap: doorHeightTexture,
+        displacementScale: 0.15,
+        normalMap: doorNormalTexture,
+        metalnessMap: doorMetalnessTexture,
+        roughnessMap: doorRoughnessTexture,
+    })
 );
+//For ambient occlusion
+door.geometry.setAttribute('uv2',
+    new Float32BufferAttribute(door.geometry.attributes.uv.array, 2)//UV values are 2D hence 2.
+)
 door.position.y = 1
 door.position.z = 4 / 2 + 0.01
 
